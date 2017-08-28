@@ -1,20 +1,27 @@
-const Mural = (function(_render, Filtro){
+const Mural = (function (_render, Filtro) {
     "use strict"
     let cartoes = []
-    const render = () => _render({cartoes: cartoes, filtro: Filtro.tagsETexto});
+    const render = () => _render({
+        cartoes: cartoes,
+        filtro: Filtro.tagsETexto
+    });
 
     Filtro.on("filtrado", render)
 
-    function adiciona(cartao){
-        cartoes.push(cartao)
-        cartao.on("mudanca.**", render)
-        cartao.on("remocao", ()=>{
-            cartoes = cartoes.slice(0)
-            cartoes.splice(cartoes.indexOf(cartao),1)
+    function adiciona(cartao) {
+        if (logado) {
+            cartoes.push(cartao)
+            cartao.on("mudanca.**", render)
+            cartao.on("remocao", () => {
+                cartoes = cartoes.slice(0)
+                cartoes.splice(cartoes.indexOf(cartao), 1)
+                render()
+            })
             render()
-        })
-        render()
-        return true
+            return true
+        } else {
+            alert('Você não está logado!')
+        }
     }
 
     return Object.seal({
