@@ -10,7 +10,7 @@
 			if(Mural.adiciona(novoCartao)){
 				$campoConteudo.val("")
 			} else {
-				alert("Você não está logado")
+				//alert("Você não está logado")
 			}
 		}
 	})
