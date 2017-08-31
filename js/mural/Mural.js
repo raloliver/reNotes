@@ -2,14 +2,24 @@ const Mural = (function (_render, Filtro) {
     "use strict"
     //aqui devemos carregar os cards do user
     //devemos tbm chamar a const Cartao() para criarmos uma nova lista com base na lista salva no localStorage
-    let cartoes = JSON.parse(localStorage.getItem("cartoes"))
-        .map(cartaoSalvo => new Cartao(
-            cartaoSalvo.conteudo,
-            cartaoSalvo.tipo
-        )) || []
+    let cartoes = (function () {
+        //mudamos um pouco a lógica por conta do retorno null do getItem
+        let cartoesSalvos = JSON.parse(localStorage.getItem(usuario))
+        if (cartoesSalvos) {
+            return cartoesSalvos.map(cartaoSalvo => new Cartao(
+                cartaoSalvo.conteudo,
+                cartaoSalvo.tipo
+            ))
+        } else {
+            return []
+        }
+    })()
+
+
     cartoes.forEach(cartao => {
         ajeitaCartao(cartao) //editar e remover os cartões salvos
     });
+
     const render = () => _render({
         cartoes: cartoes,
         filtro: Filtro.tagsETexto
@@ -31,7 +41,8 @@ const Mural = (function (_render, Filtro) {
 
     function adicionaCartoes() {
         //usamos o stringify passando as propriedades do cartao (conteudo, tipo)
-        localStorage.setItem("cartoes", JSON.stringify(
+        //passamos um novo valor pra o setItem e dai atrelar esses valores ao usuário logado
+        localStorage.setItem(usuario, JSON.stringify(
             cartoes.map(cartao => ({
                 conteudo: cartao.conteudo,
                 tipo: cartao.tipo
