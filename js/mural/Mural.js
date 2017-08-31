@@ -50,6 +50,16 @@ const Mural = (function (_render, Filtro) {
         ))
     }
 
+    //evento de login com base na lib EventEmitter2
+    login.on("login", ()=> {
+
+    })
+
+    login.on("logout", ()=> {
+        cartoes = []
+        render()
+    })
+
     function adiciona(cartao) {
         if (logado) {
             cartoes.push(cartao)
