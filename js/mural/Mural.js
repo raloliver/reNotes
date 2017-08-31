@@ -2,18 +2,7 @@ const Mural = (function (_render, Filtro) {
     "use strict"
     //aqui devemos carregar os cards do user
     //devemos tbm chamar a const Cartao() para criarmos uma nova lista com base na lista salva no localStorage
-    let cartoes = (function () {
-        //mudamos um pouco a lógica por conta do retorno null do getItem
-        let cartoesSalvos = JSON.parse(localStorage.getItem(usuario))
-        if (cartoesSalvos) {
-            return cartoesSalvos.map(cartaoSalvo => new Cartao(
-                cartaoSalvo.conteudo,
-                cartaoSalvo.tipo
-            ))
-        } else {
-            return []
-        }
-    })()
+    let cartoes = palpaCartoesUsuario()
 
 
     cartoes.forEach(cartao => {
@@ -28,6 +17,19 @@ const Mural = (function (_render, Filtro) {
     render() //aqui forçamos o render da página para pegar os cartões do localStorage
 
     Filtro.on("filtrado", render)
+
+    function palpaCartoesUsuario() {
+        //mudamos um pouco a lógica por conta do retorno null do getItem
+        let cartoesSalvos = JSON.parse(localStorage.getItem(usuario))
+        if (cartoesSalvos) {
+            return cartoesSalvos.map(cartaoSalvo => new Cartao(
+                cartaoSalvo.conteudo,
+                cartaoSalvo.tipo
+            ))
+        } else {
+            return []
+        }
+    }
 
     function ajeitaCartao(cartao) {
         cartao.on("mudanca.**", adicionaCartoes)
@@ -51,11 +53,12 @@ const Mural = (function (_render, Filtro) {
     }
 
     //evento de login com base na lib EventEmitter2
-    login.on("login", ()=> {
-
+    login.on("login", () => {
+        cartoes = palpaCartoesUsuario()
+        render() //pela lógica do sistema é necessário sempre renderizar a página novamente
     })
 
-    login.on("logout", ()=> {
+    login.on("logout", () => {
         cartoes = []
         render()
     })
