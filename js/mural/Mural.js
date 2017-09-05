@@ -30,8 +30,18 @@ const Mural = (function (_render, Filtro) {
             return []
         }
     }
-
+    /**todos os cartões passam por aqui, independente de vir do cache ou se o user estiver on ou off */
     function ajeitaCartao(cartao) {
+        const listaImagens = Cartao.pegaImagens(cartao)
+
+        listaImagens.forEach(url => {
+            fetch(url).then(resposta => {
+                caches.open("renotes-imagens").then(cache => {
+                    cache.put(url, resposta)
+                })
+            })
+        })
+
         cartao.on("mudanca.**", adicionaCartoes)
         cartao.on("remocao", () => {
             cartoes = cartoes.slice(0)
