@@ -30,8 +30,18 @@ const Mural = (function (_render, Filtro) {
             return []
         }
     }
-
+    /**todos os cartões passam por aqui, independente de vir do cache ou se o user estiver on ou off */
     function ajeitaCartao(cartao) {
+        const listaImagens = Cartao.pegaImagens(cartao)
+
+        listaImagens.forEach(url => {
+            fetch(url).then(resposta => {
+                caches.open("renotes-imagens").then(cache => {
+                    cache.put(url, resposta)
+                })
+            })
+        })
+
         cartao.on("mudanca.**", adicionaCartoes)
         cartao.on("remocao", () => {
             cartoes = cartoes.slice(0)
@@ -69,7 +79,7 @@ const Mural = (function (_render, Filtro) {
             adicionaCartoes() //função para salvar os dados do cartão (assim pq precisamos das propriedades)
             //para que o editar e o remover funcionem, eu preciso adicionar ele nos cartoes do JSON.parse
             cartao.on("mudanca.**", render)
-            ajeitaCartao(cartao) //editar e remover os cartões adicionados
+            ajeitaCartao(cartao) //editar e remover os cartões adicionados      
             render()
             return true
         } else {
