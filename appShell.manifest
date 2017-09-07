@@ -1,10 +1,11 @@
 CACHE MANIFEST
 
-#update07092017.14
+#update07092017.17
 
 CACHE:
 img/bin2.svg
 img/edit.svg
+img/list.png
 css/estilos.css
 css/opcoesDaPagina.css
 css/opcoesDoCartao.css
