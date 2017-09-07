@@ -1,4 +1,4 @@
-let semVer = 13 //para atualização dos arquivos, apenas o comentário é suficiente
+let semVer = 14 //para atualização dos arquivos, apenas o comentário é suficiente
 
 //quais serão os arquivos que devem ser instalados?
 let mainFiles = ["/", "img/bin2.svg", "img/edit.svg", "css/estilos.css", "css/opcoesDaPagina.css", "css/opcoesDoCartao.css", "css/cabecalho.css", "css/login.css", "css/loginForm.css", "css/loginStatus.css", "css/cartao.css", "css/novoCartao.css", "css/mural.css", "js/lib/jquery.js", "js/lib/eventemitter2.js", "js/lib/KeyBoardNavigation.js", "js/tags/Tags.js", "js/cabecalho/mudaLayout.js", "js/cabecalho/busca.js", "js/filtro/Filtro.js", "js/tipos/TiposCartao.js", "js/cartao/render/Cartao_renderHelpers.js", "js/cartao/render/CartaoOpcoes_render.js", "js/cartao/render/CartaoConteudo_render.js", "js/cartao/render/Cartao_render.js", "js/cartao/Cartao.js", "js/login/LoginUsuario_render.js", "js/login/LoginUsuario.js", "js/mural/render/Mural_render.js", "js/mural/Mural.js", "js/cabecalho/novoCartao.js"]
@@ -6,18 +6,21 @@ let mainFiles = ["/", "img/bin2.svg", "img/edit.svg", "css/estilos.css", "css/op
 //instalar arquivos apenas no momento da instalação do sw e apenas uma única vez
 self.addEventListener("install", function () {
     console.log("SW init install...")
+})
+
+//atualizar todas as abas (sessões) ativas
+self.addEventListener("activate", function () {
     caches.open("renotes-arquivos-" + semVer).then(cache => {
         console.log("SW install files...")
         //.addAll para adicionar todos os arquivos de uma lista
         cache.addAll(mainFiles)
-        console.log("SW delete files...")
+        console.log("SW delete old files...")
         //remover versões antigas de cache
         caches.delete("renotes-arquivos-" + (semVer - 1))
         //como remover os arquivos que não são mais necessários?
         caches.delete("renotes-arquivos")
-        
-    })
 
+    })
 })
 
 
