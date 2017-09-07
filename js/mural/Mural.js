@@ -79,7 +79,7 @@ const Mural = (function (_render, Filtro) {
             adicionaCartoes() //função para salvar os dados do cartão (assim pq precisamos das propriedades)
             //para que o editar e o remover funcionem, eu preciso adicionar ele nos cartoes do JSON.parse
             cartao.on("mudanca.**", render)
-            ajeitaCartao(cartao) //editar e remover os cartões adicionados
+            ajeitaCartao(cartao) //editar e remover os cartões adicionados      
             render()
             return true
         } else {
